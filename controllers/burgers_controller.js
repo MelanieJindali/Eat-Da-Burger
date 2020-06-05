@@ -22,3 +22,13 @@ router.post("/api/burgers", function(req, res) {
     });
 });
 
+router.put("/api/burgers/:id", function(req, res) {
+    var condition = "ID =" + req.params.id;
+    console.log("Condition:", condition);
+
+    burger.update({ devoured: req.body.sleepy }, condition, function(data) {
+        res.redirect("/index")
+    });
+});
+
+module.exports = router;
