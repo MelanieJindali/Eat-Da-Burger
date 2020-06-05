@@ -1,5 +1,6 @@
 var connection = require("./connection.js");
 
+// Helper function that loops through & creates an array of question marks and turns it into a string. This helps write the mySQL query.
 function questionMarks(num) {
     var arr = [];
   
@@ -8,7 +9,23 @@ function questionMarks(num) {
     }
   
     return arr.toString();
-  }
+  };
+
+// Helper function that converts object key/value pairs to SQL syntax
+function objToSql(ob) {
+    var arr = [];
+
+    for (var key in ob) {
+      var value = ob[key];
+      if (Object.hasOwnProperty.call(ob, key)) {
+        if (typeof value === "string" && value.indexOf(" ") >= 0) {
+          value = "'" + value + "'";
+        };
+        arr.push(key + "=" + value);
+      };
+    };
+    return arr.toString();
+  };
 
 var orm = {
     selectAll: function(tableInput, cb) {
@@ -18,7 +35,7 @@ var orm = {
             cb(res)
         });
     },
-    insertOne: function(table, column, value) {
+    insertOne: function(table, column, value, cb) {
         var queryString = "INSERT INTO " + table;
 
         queryString += " (";
@@ -31,6 +48,19 @@ var orm = {
         console.log(queryString);
 
         connection.query(queryString, vals, function(err, res) {
+            if (err) throw err;
+            cb(res);
+        });
+    },
+    updateOne: function(table, columnVal, cb) {
+        var queryString = "UPDATE " + table;
+
+        queryString += " SET ";
+        queryString += objToSql(columnVal);
+        queryString += " WHERE ";
+
+        console.log(queryString);
+        connection.query(queryString, function(err, res) {
             if (err) throw err;
             cb(res);
         });
