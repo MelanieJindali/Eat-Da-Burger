@@ -52,12 +52,13 @@ var orm = {
             cb(res);
         });
     },
-    updateOne: function(table, columnVal, cb) {
+    updateOne: function(table, columnVal, condition, cb) {
         var queryString = "UPDATE " + table;
 
         queryString += " SET ";
         queryString += objToSql(columnVal);
         queryString += " WHERE ";
+        queryString += condition;
 
         console.log(queryString);
         connection.query(queryString, function(err, res) {
