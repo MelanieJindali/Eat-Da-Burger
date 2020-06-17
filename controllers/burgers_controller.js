@@ -7,7 +7,7 @@ router.get("/", function(req, res) {
     res.redirect("/index");
 });
 
-router.get("/", function(req, res) {
+router.get("/index", function(req, res) {
     burger.all(function(data) {
         // Handlebars object
         var hbsObj = { burgers: data };
@@ -26,7 +26,7 @@ router.put("/api/burgers/:id", function(req, res) {
     var condition = "ID =" + req.params.id;
     console.log("Condition:", condition);
 
-    burger.update({ devoured: req.body.sleepy }, condition, function(data) {
+    burger.update({ devoured: req.body.devoured }, condition, function(data) {
         res.redirect("/index")
     });
 });
