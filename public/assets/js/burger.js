@@ -10,7 +10,7 @@ $(function() {
       type: "POST",
       data: newBurg,
     }).then(function() {
-      console.log("created new burger");
+      console.log("New burger Added!");
       location.reload(); // Refresh Page
     });
   });
